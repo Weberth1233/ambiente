@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Ambiente de GitLab Local (Servidor)
+  gitlab:
+    container_name: gitlab-server
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    ports:
+      - "8080:80"  # Acesso ao GitLab na porta 8080
+      - "2222:22"  # Acesso SSH (para puxar código via Git)
+    volumes:
+      - gitlab-config:/etc/gitlab
+      - gitlab-data:/var/opt/gitlab
+      - gitlab-logs:/var/log/gitlab
+    networks:
+      - server_network
+
+# Redes isoladas para cada ambiente
+networks:
+  server_network:
+    driver: bridge
+ 
+
+# Volumes para persistência de dados
+volumes:
+  gitlab-config:
+  gitlab-data:
+  gitlab-logs:
